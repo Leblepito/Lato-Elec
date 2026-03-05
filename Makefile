@@ -1,40 +1,30 @@
-.PHONY: up down build logs db-shell api-shell seed migrate backup
+.PHONY: up down build logs db-shell seed backup clean dev-backend dev-frontend
 
-# Hızlı başlat
+# Docker
 up:
 	docker compose up -d
-
-# Durdur
 down:
 	docker compose down
-
-# Yeniden build
 build:
 	docker compose build --no-cache
-
-# Logları izle
 logs:
 	docker compose logs -f
 
-# DB shell
+# Database
 db-shell:
 	docker compose exec postgres psql -U electropms -d electropms
-
-# API shell
-api-shell:
-	docker compose exec backend python -c "from app.database import get_db; print('DB OK')"
-
-# Demo veri yükle
+db-init:
+	docker compose exec postgres psql -U electropms -d electropms -f /docker-entrypoint-initdb.d/01-schema.sql
 seed:
 	docker compose exec postgres psql -U electropms -d electropms -f /docker-entrypoint-initdb.d/02-seed.sql
-
-# Migration çalıştır
-migrate:
-	docker compose exec backend alembic upgrade head
-
-# DB yedekle
 backup:
 	docker compose exec postgres pg_dump -U electropms electropms > backup_$$(date +%Y%m%d_%H%M%S).sql
+
+# Lokal geliştirme (Docker olmadan)
+dev-backend:
+	cd backend && uvicorn app.main:app --reload --port 8000
+dev-frontend:
+	cd frontend && npm run dev
 
 # Temizlik
 clean:
