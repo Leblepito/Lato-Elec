@@ -2,6 +2,6 @@
 dockerfilePath = "Dockerfile"
 
 [deploy]
-healthcheckPath = "/docs"
+healthcheckPath = "/api/health"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
