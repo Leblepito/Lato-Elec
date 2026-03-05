@@ -1,0 +1,21 @@
+-- ═══ Performance Indexes ═══
+CREATE INDEX idx_equipment_parent ON equipment(parent_id);
+CREATE INDEX idx_equipment_type ON equipment(type);
+CREATE INDEX idx_equipment_status ON equipment(status);
+CREATE INDEX idx_readings_equipment_time ON equipment_readings(equipment_id, recorded_at DESC);
+CREATE INDEX idx_readings_type ON equipment_readings(reading_type);
+CREATE INDEX idx_wo_status ON work_orders(status);
+CREATE INDEX idx_wo_assigned ON work_orders(assigned_to);
+CREATE INDEX idx_wo_equipment ON work_orders(equipment_id);
+CREATE INDEX idx_wo_priority ON work_orders(priority);
+CREATE INDEX idx_messages_channel ON messages(channel, created_at DESC);
+CREATE INDEX idx_messages_sender ON messages(sender_id);
+CREATE INDEX idx_alerts_equipment ON alerts(equipment_id, created_at DESC);
+CREATE INDEX idx_alerts_unresolved ON alerts(resolved_at) WHERE resolved_at IS NULL;
+CREATE INDEX idx_staff_loc_user ON staff_locations(user_id, recorded_at DESC);
+CREATE INDEX idx_files_user ON uploaded_files(user_id, created_at DESC);
+CREATE INDEX idx_files_wo ON uploaded_files(work_order_id);
+CREATE INDEX idx_oauth_provider ON oauth_accounts(provider, provider_user_id);
+CREATE INDEX idx_sessions_token ON sessions(token_hash);
+CREATE INDEX idx_sessions_user ON sessions(user_id);
+CREATE INDEX idx_maint_log_eq ON maintenance_logs(equipment_id, performed_at DESC);
