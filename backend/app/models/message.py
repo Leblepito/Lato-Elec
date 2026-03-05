@@ -12,7 +12,7 @@ class Message(Base):
     sender_type = Column(String(30), default="user")
     message_type = Column(String(30), default="text")
     content = Column(Text, nullable=False)
-    metadata = Column(JSON, default={})
+    extra_data = Column("metadata", JSON, default={})
     reply_to = Column(Integer, ForeignKey("messages.id"))
     is_read = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)

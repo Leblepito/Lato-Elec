@@ -37,6 +37,6 @@ class EquipmentReading(Base):
     value_l3 = Column(Float)
     value_avg = Column(Float)
     unit = Column(String(20))
-    metadata = Column(JSON, default={})
+    extra_data = Column("metadata", JSON, default={})
     recorded_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     equipment = relationship("Equipment", back_populates="readings")
