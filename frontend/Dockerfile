@@ -1,9 +1,20 @@
-FROM node:20-alpine
+# ═══ ElectroPMS Frontend ═══
+# Multi-stage: build (dev deps) → production (sadece dist + serve)
+
+# Stage 1: Build
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package.json .
-RUN npm install --production=false
+RUN npm install
 COPY . .
 RUN npm run build
-RUN npm install -g serve
+
+# Stage 2: Production (küçük image)
+FROM node:20-alpine
+WORKDIR /app
+RUN npm install -g serve@14
+COPY --from=builder /app/dist ./dist
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 EXPOSE 3000
-CMD serve -s dist -l ${PORT:-3000}
+ENTRYPOINT ["./entrypoint.sh"]
