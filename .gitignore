@@ -12,3 +12,8 @@ uploads/
 *.log
 android/
 ios/
+.idea/
+.vscode/
+*.swp
+*.swo
+package-lock.json
